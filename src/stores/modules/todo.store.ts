@@ -1,7 +1,7 @@
 import { defineStore } from 'pinia';
 import { ref } from 'vue';
 import { StoreIds } from '@/@enums';
-import { ITodo } from '@/@interfaces';
+import { Todo } from '@/@interfaces';
 
 type ChangeIsDonePayload = {
     id: string;
@@ -9,7 +9,7 @@ type ChangeIsDonePayload = {
 };
 
 export const useTodoStore = defineStore(StoreIds.TODO, () => {
-    const todoList = ref<ITodo[]>([
+    const todoList = ref<Todo[]>([
         {
             title: 'TODO',
             isDone: false,
@@ -17,14 +17,14 @@ export const useTodoStore = defineStore(StoreIds.TODO, () => {
         },
     ]);
 
-    function addTodo(payload: ITodo): void {
+    function addTodo(payload: Todo): void {
         todoList.value.push(payload);
     }
 
     function changeIsDone(payload: ChangeIsDonePayload): void {
         const newTodoList = todoList.value.map((item) => {
             if (item.id === payload.id) {
-                const newItem: ITodo = {
+                const newItem: Todo = {
                     ...item,
                     isDone: payload.value,
                 };
@@ -38,7 +38,7 @@ export const useTodoStore = defineStore(StoreIds.TODO, () => {
     }
 
     function deleteOne(payload: string) {
-        todoList.value = todoList.value.filter((item) => item.id !== payload);
+        todoList.value = todoList.value.filter(({ id }) => id !== payload);
     }
 
     return {

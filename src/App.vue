@@ -1,7 +1,7 @@
 <template>
-    <Test />
+    <Todo />
 </template>
 
 <script lang="ts" setup>
-import Test from '@/views/Test.vue';
+import Todo from '@/views/Todo.vue';
 </script>

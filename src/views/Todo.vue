@@ -9,11 +9,9 @@
 
     <ul class="list">
         <TodoItem
-            v-for="(item, i) in searchTodoList.length ? searchTodoList : todoList"
-            :id="item.id"
-            :key="i"
-            :title="item.title"
-            :is-done="item.isDone"
+            v-for="item in searchTodoList.length ? searchTodoList : todoList"
+            :key="item.id"
+            :item="item"
         />
     </ul>
     <div>
@@ -27,11 +25,11 @@
 
 <script lang="ts" setup>
 import { storeToRefs } from 'pinia';
-import { onUpdated, ref } from 'vue';
-import { ITodo } from '@/@interfaces';
+import { computed, ref, watchEffect } from 'vue';
+import { Todo } from '@/@interfaces';
 import { useTodoStore } from '@/stores';
 import { uid } from '@/utils';
-import TodoItem from '@/components/TodoItem.vue';
+import { TodoItem } from '@/components';
 
 const todoStore = useTodoStore();
 const { todoList } = storeToRefs(todoStore);
@@ -39,20 +37,17 @@ const { addTodo } = todoStore;
 
 const titleInputValue = ref('');
 const searchInputValue = ref('');
-const searchTodoList = ref<ITodo[]>([]);
 
 const addHandler = () => {
     addTodo({ title: titleInputValue.value, id: uid(), isDone: false });
     titleInputValue.value = '';
 };
 
-onUpdated(() => {
+const searchTodoList = computed(() => {
     if (searchInputValue.value.length) {
-        searchTodoList.value = todoList.value.filter((item) =>
-            item.title.toLowerCase().includes(searchInputValue.value),
-        );
+        return todoList.value.filter((item) => item.title.toLowerCase().includes(searchInputValue.value));
     } else {
-        searchTodoList.value = [];
+        return [];
     }
 });
 </script>
