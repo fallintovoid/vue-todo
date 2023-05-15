@@ -9,24 +9,20 @@
 
 <script setup lang="ts">
 import { onMounted } from 'vue';
+import { useIntersectionObserver } from '@/modules';
 import { usePostsStore } from '@/stores';
 
-const target = $ref(null);
+const target = $ref<HTMLDivElement | undefined>();
 const { incrementCurrentPage } = usePostsStore();
-
-function callback(entries: any) {
-    const [entry] = entries;
-    console.log(entry.isIntersecting);
-}
+const { observeTarget } = useIntersectionObserver();
 
 onMounted(() => {
-    const observer = new IntersectionObserver(callback, {
-        rootMargin: '0px',
-        threshold: 1.0,
-    });
     if (target) {
-        console.log(target)
-        observer.observe(target);
+        observeTarget(target, (entry) => {
+            if (entry.isIntersecting) {
+                incrementCurrentPage();
+            }
+        });
     }
 });
 </script>
