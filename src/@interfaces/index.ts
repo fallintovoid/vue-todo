@@ -1,5 +1,1 @@
-export interface Todo {
-    title: string;
-    isDone: boolean;
-    id: string;
-}
+export * from './posts';

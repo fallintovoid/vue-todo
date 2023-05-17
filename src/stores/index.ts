@@ -1,2 +1,2 @@
-export * from './modules/todo.store';
+export * from './modules/posts.store';
 export * from './store';

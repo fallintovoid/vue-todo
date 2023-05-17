@@ -1,7 +1,7 @@
 <template>
-    <Todo />
+    <PostList />
 </template>
 
 <script lang="ts" setup>
-import Todo from '@/views/Todo.vue';
+import PostList from './views/PostList.vue';
 </script>
