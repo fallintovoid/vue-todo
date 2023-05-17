@@ -1,7 +1,7 @@
 <template>
     <ModalWrapper
         :is-open="isOpen"
-        @close="$emit('close')"
+        @update:is-open="$emit(Emits.CLOSE, false)"
     >
         <div
             class="modal"
@@ -20,24 +20,28 @@
 </template>
 
 <script setup lang="ts">
+import { Emits } from '@/@enums';
 import { usePostsStore } from '@/stores';
 import { ModalWrapper } from '@/components';
 
 const { isOpen } = defineProps<{
     isOpen: boolean;
 }>();
+
 const emit = defineEmits<{
-    (e: 'close'): void;
+    (e: Emits.CLOSE, value: boolean): void;
 }>();
 
 const { addPost } = usePostsStore();
 
-const titleInputValue = $ref('');
-const bodyInputValue = $ref('');
+let titleInputValue = $ref('');
+let bodyInputValue = $ref('');
 
 function onAddPost(): void {
     addPost(titleInputValue, bodyInputValue);
-    emit('close');
+    titleInputValue = '';
+    bodyInputValue = '';
+    emit(Emits.CLOSE, false);
 }
 </script>
 

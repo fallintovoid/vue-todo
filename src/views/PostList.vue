@@ -9,36 +9,25 @@
                 :item="item"
             />
         </ul>
-        <ModalAddPost
-            :is-open="isOpen"
-            @close="onClose"
-        />
+        <ModalAddPost v-model:is-open="isOpen" />
     </div>
     <Footer />
 </template>
 
 <script lang="ts" setup>
 import { storeToRefs } from 'pinia';
-import { onMounted, watchEffect } from 'vue';
+import { watchEffect } from 'vue';
 import { usePostsStore } from '@/stores';
 import { Footer, ModalAddPost, PostItem } from '@/components';
 
 const postsStore = usePostsStore();
-const { fetchPosts, inititalLoad } = postsStore;
+const { fetchPosts } = postsStore;
 const { postsList } = storeToRefs(postsStore);
 let isOpen = $ref(false);
-
-function onClose(): void {
-    isOpen = false;
-}
 
 function onOpen(): void {
     isOpen = true;
 }
-
-onMounted(() => {
-    inititalLoad();
-});
 
 watchEffect(() => {
     fetchPosts();

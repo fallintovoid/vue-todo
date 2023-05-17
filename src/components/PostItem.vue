@@ -6,17 +6,16 @@
         </div>
         <button @click="onOpen">Change</button>
         <ModalChangePost
-            :is-open="isOpen"
+            v-model:is-open="isOpen"
             :post-id="item.id"
             :title="item.title"
             :body="item.body"
-            @close="onClose"
         />
     </li>
 </template>
 
 <script setup lang="ts">
-import { Post } from '@/@interfaces/posts';
+import { Post } from '@/@interfaces';
 import { ModalChangePost } from '@/components';
 
 const { item } = defineProps<{
@@ -24,10 +23,6 @@ const { item } = defineProps<{
 }>();
 
 let isOpen = $ref(false);
-
-function onClose(): void {
-    isOpen = false;
-}
 
 function onOpen(): void {
     isOpen = true;

@@ -2,18 +2,20 @@
     <div
         v-if="isOpen"
         class="modal-background"
-        @click.stop="$emit('close')"
+        @click="$emit(Emits.CLOSE, false)"
     >
         <slot />
     </div>
 </template>
 
 <script setup lang="ts">
+import { Emits } from '@/@enums';
+
 const { isOpen } = defineProps<{
     isOpen: boolean;
 }>();
 defineEmits<{
-    (e: 'close'): void;
+    (e: Emits.CLOSE, value: boolean): void;
 }>();
 </script>
 

@@ -1,18 +1,18 @@
 <template>
     <ModalWrapper
         :is-open="isOpen"
-        @close="onClose"
+        @update:is-open="onClose"
     >
         <div
             class="modal-inner"
             @click="$event.stopPropagation()"
         >
             <input
-                v-model="titleInputValue"
+                v-model.trim="titleInputValue"
                 type="text"
             />
             <textarea
-                v-model="bodyInputValue"
+                v-model.trim="bodyInputValue"
                 type="text"
             />
             <button @click="onChangePostData">Change data</button>
@@ -21,6 +21,7 @@
 </template>
 
 <script setup lang="ts">
+import { Emits } from '@/@enums';
 import { usePostsStore } from '@/stores';
 import { ModalWrapper } from '@/components';
 
@@ -31,8 +32,9 @@ const { isOpen, postId, title, body } = defineProps<{
     body: string;
 }>();
 const emit = defineEmits<{
-    (e: 'close'): void;
+    (e: Emits.CLOSE, value: false): void;
 }>();
+
 const { changePostData } = usePostsStore();
 
 let titleInputValue = $ref(title);
@@ -44,13 +46,13 @@ function onChangePostData() {
         body: bodyInputValue,
     };
     changePostData(postId, data);
-    emit('close');
+    emit(Emits.CLOSE, false);
 }
 
 function onClose(): void {
     titleInputValue = title;
     bodyInputValue = body;
-    emit('close');
+    emit(Emits.CLOSE, false);
 }
 </script>
 

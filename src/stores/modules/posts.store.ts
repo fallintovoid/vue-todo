@@ -16,13 +16,6 @@ export const usePostsStore = defineStore(StoreIds.POSTS, () => {
         postsList.value = [...postsList.value, ...data];
     }
 
-    async function inititalLoad() {
-        const data = await axios
-            .get<Post[]>(`https://jsonplaceholder.typicode.com/posts?_page=1&_limit=10`)
-            .then((res) => res.data);
-        postsList.value = data;
-    }
-
     function incrementCurrentPage(): void {
         currentPage.value++;
     }
@@ -51,6 +44,5 @@ export const usePostsStore = defineStore(StoreIds.POSTS, () => {
         changePostData,
         addPost,
         currentPage,
-        inititalLoad,
     };
 });
